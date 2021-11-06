@@ -1,4 +1,9 @@
-# Prak-PEMWEB-RA-2021
+# Praktikum PemWeb RA
 
-Masukkan nama anda disini dengan format :
-Nama - NIM
+Repo ini berisi kumpulan tugas praktikum yang telah diberikan dan dikumpulkan.
+
+| | |
+| - | -|
+| Nama | Andhika Wibawa |
+| NIM | 119140218 |
+| Kelas | PemWeb-RA |
