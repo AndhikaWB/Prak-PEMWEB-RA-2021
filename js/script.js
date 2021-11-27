@@ -1,47 +1,62 @@
 $(document).ready(function() {
+    // Workaround delegate event handler untuk menangani perubahan elemen dinamis
+    // https://stackoverflow.com/questions/41694535/
+    // https://api.jquery.com/on/
+
+    $.fn.mixon = function(events) {
+        Object.keys(events).forEach(function(selector) {
+            let entry = events[selector];
+            Object.keys(entry).forEach(function(event) {
+                this.on(event, selector, entry[event]);
+            }, this);
+        }, this);
+        return this;
+    };
+
     // ==============================
     // Halaman index.html
     // ==============================
 
-    // Ketika form login di submit
-    $("#form-login").on({
-        submit: function(event) {
-            $.ajax({
-                type: "POST",
-                url: "php/login.php",
-                data: $("#form-login").serialize() + "&type=login",
-                dataType: "json",
-                success: function(data) {
-                    if (data["success"] === false) {
-                        alert("Email atau kata sandi akun salah!");
-                    } else {
-                        window.location.replace("/manage.html");
+    $("#form-parent").mixon({
+        "#form-login": {
+            // Jika form login di submit
+            submit: function(event) {
+                $.ajax({
+                    type: "POST",
+                    url: "php/login.php",
+                    data: $("#form-login").serialize() + "&type=login",
+                    dataType: "json",
+                    success: function(data) {
+                        if (data["success"] === false) {
+                            alert("Email atau kata sandi akun salah!");
+                        } else {
+                            window.location.replace("/manage.html");
+                        }
                     }
-                }
-            });
-            // Cegah refresh halaman
-            event.preventDefault();
-        }
-    });
-
-    // Ketika form register di submit
-    $("#form-register").on({
-        submit: function(event) {
-            $.ajax({
-                type: "POST",
-                url: "php/tambah.php",
-                data: $("#form-register").serialize() + "&type=register",
-                dataType: "json",
-                success: function(data) {
-                    if (data["success"] === false) {
-                        alert("Gagal menambahkan akun baru!");
-                    } else {
-                        alert("Sukses menambahkan akun baru!");
+                });
+                // Cegah refresh halaman
+                event.preventDefault();
+            }
+        },
+        "#form-register": {
+            // Jika form register di submit
+            submit: function(event) {
+                $.ajax({
+                    type: "POST",
+                    url: "php/login.php",
+                    data: $("#form-register").serialize() + "&type=register",
+                    dataType: "json",
+                    success: function(data) {
+                        if (data["success"] === false) {
+                            alert("Gagal menambahkan akun baru!");
+                        } else {
+                            alert("Sukses menambahkan akun baru!");
+                        }
                     }
-                }
-            });
-            // Cegah refresh halaman
-            //event.preventDefault();
+                });
+                // Cegah refresh halaman
+                //event.preventDefault();
+            }
         }
     });
 
@@ -64,11 +79,11 @@ $(document).ready(function() {
                     } else {
                         alert("Status barang berhasil diperbarui!");
                         // Bersihkan data barang pada tabel
-                        $("#table-mhs").find("tr:has(td)").remove();
-                        if (data.length) {
+                        $("#table-goods").find("tr:has(td)").remove();
+                        if (data["result"].length) {
                             // Tambahkan baris-baris baru pada tabel barang
-                            data.forEach(function(row) {
-                                $("#table-mhs")
+                            data["result"].forEach(function(row) {
+                                $("#table-goods")
                                     .append("<tr>" + 
                                             "<td>" + row["id"] + "</td>" +
                                             "<td>" + row["name"] + "</td>" +
@@ -79,7 +94,7 @@ $(document).ready(function() {
                                             "<tr>");
                             });
                             // Hilangkan kemungkinan adanya baris kosong
-                            $("#table-mhs tr:empty").remove();
+                            $("#table-goods tr:empty").remove();
                         }
                     }
                 }
@@ -88,20 +103,6 @@ $(document).ready(function() {
             event.preventDefault();
         }
     });
-
-    // Workaround delegate event handler untuk menangani perubahan tabel dinamis
-    // https://stackoverflow.com/questions/41694535/
-    // https://api.jquery.com/on/
-
-    $.fn.mixon = function(events) {
-        Object.keys(events).forEach(function(selector) {
-            let entry = events[selector];
-            Object.keys(entry).forEach(function(event) {
-                this.on(event, selector, entry[event]);
-            }, this);
-        }, this);
-        return this;
-    };
 
     $("#table-goods").mixon({
         ".bi-pencil-fill": {
@@ -131,8 +132,8 @@ $(document).ready(function() {
                 if (confirm("Ingin menghapus baris ini?")) {
                     $.ajax({
                         type: "POST",
-                        url: "php/hapus.php",
-                        data: { id: $(this).closest("tr").children("td").first().text() },
+                        url: "php/manage.php",
+                        data: { id: $(this).closest("tr").children("td").first().text(), type: "delete" },
                         dataType: "json",
                         success: function(data) {
                             if (data["success"] === false) {
