@@ -1,0 +1,50 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Require PHP Debug + Xdebug
+            "name": "Debug PHP (listen browser)",
+            "type": "php",
+            "request": "launch",
+            "port": 9003
+        },
+        {
+            // Require PHP Debug + Xdebug
+            "name": "Debug PHP (launch browser)",
+            "type": "php",
+            "request": "launch",
+            "runtimeArgs": [
+                "-dxdebug.mode=debug",
+                "-dxdebug.start_with_request=yes",
+                "-S",
+                "localhost:0"
+            ],
+            "program": "",
+            "cwd": "${workspaceRoot}",
+            "port": 9003,
+            "serverReadyAction": {
+                "pattern": "Development Server \\(http://localhost:([0-9]+)\\) started",
+                "uriFormat": "http://localhost:%s",
+                "action": "openExternally"
+            }
+        },
+        {
+            // Require Debugger for Firefox
+            "name": "Debug JS (launch Firefox)",
+            "type": "firefox",
+            "request": "launch",
+            "reAttach": true,
+            // Equal to "<PATH_TO_HTDOCS>/web/<WORKSPACE_NAME>/index.<PHP_OR_HTML>"
+            "url": "http://localhost/web/${workspaceFolderBasename}/",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "name": "Debug JS (launch Chrome)",
+            "type": "chrome",
+            "request": "launch",
+            // Equal to "<PATH_TO_HTDOCS>/web/<WORKSPACE_NAME>/index.<PHP_OR_HTML>"
+            "url": "http://localhost/web/${workspaceFolderBasename}/",
+            "webRoot": "${workspaceFolder}"
+        }
+    ]
+}
