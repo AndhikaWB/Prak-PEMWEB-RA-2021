@@ -12,19 +12,19 @@
         if ($result) {
             if ($result->num_rows > 0) {
                 // Dapatkan password murni pada database
-                $pasword = $result->fetch_assoc()[0]["password"];
+                $pasword = $conn->query($sql)->fetch_assoc()["password"];
                 // Bandingkan password murni dengan hash password
                 if (password_verify($pasword, $_SESSION["TYBEtdoU"])) {
                     // Alihkan ke beranda bila kedua password sama
                     header("Location: home.php");
                 }
             }
-        } else {
-            // Alihkan ke halaman error jika koneksi ke database gagal
-            http_response_code(500);
-            include "error.php";
-            die();
-        }
+        } else $error = true;
+    }
+    if ($error) {
+        // Alihkan ke halaman error jika koneksi ke database gagal
+        http_response_code(500);
+        include "error.php";
     }
     $conn->close();
 ?>
@@ -34,7 +34,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
+    <title>Andhika Wibawa - 119140218</title>
     <!-- JQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
     <!-- Bootstrap -->

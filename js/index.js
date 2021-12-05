@@ -10,7 +10,9 @@ $(document).ready(function() {
                     alert("Email atau kata sandi akun salah!");
                 } else {
                     // Alihkan ke beranda
-                    window.location.replace("/home.html");
+                    let path = window.location.href;
+                    let parentDir = path.substring(0, path.lastIndexOf("/") + 1); 
+                    window.location.replace(parentDir + "home.php");
                 }
             }
         });

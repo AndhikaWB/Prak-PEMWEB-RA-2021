@@ -26,9 +26,10 @@
                 <div class="card" style="width: 28rem;">
                     <div class="card-body text-center">
                         <h1 class="card-title"><?php echo http_response_code() ?></h1>
+                        <!-- Sumber: https://www.freepik.com/free-vector/tiny-people-standing-near-prohibited-gesture-isolated-flat-illustration_11235950.htm -->
                         <img src="img/error.svg" class="img-fluid" alt="Background">
                         <p class="card-text"><?php echo $error ?></p>
-                        <a href="index.html" class="btn btn-primary">Kembali ke beranda</a>
+                        <a href="index.php" class="btn btn-primary">Kembali ke beranda</a>
                     </div>
                 </div>
             </div>

@@ -13,11 +13,15 @@
     } elseif ($type == "register") {
         $sql = "INSERT INTO user VALUES ('$name', '$email', '$pass')";
         $result = $conn->query($sql);
+    } elseif ($type == "logout") {
+        unset($_SESSION["vYMDpfRD"]);
+        unset($_SESSION["TYBEtdoU"]);
+        $result = true;
     }
 
 	if ($result) {
         if ($type == "login") {
-            $_SESSION["vYMDpfRD"] = crypt($email, $crypt);
+            $_SESSION["vYMDpfRD"] = openssl_encrypt($email, $cipher, $salt);
             $_SESSION["TYBEtdoU"] = password_hash($pass, PASSWORD_DEFAULT);
         }
         $response = array("success" => true, "type" => $type);
